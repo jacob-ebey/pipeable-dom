@@ -1,5 +1,7 @@
 # pipeable-dom
 
+![bundle size](https://deno.bundlejs.com/badge?q=pipeable-dom&treeshake=%5B*%5D)
+
 Piecewise utilities to stream HTML content into a live document, or wherever else you want to pipe it.
 
 This is a derivative of [@MarkdoDevTeam](https://x.com/MarkoDevTeam)'s [writable-dom](https://github.com/marko-js/writable-dom) that exposes lower-level utilities for working with the streamed HTML content.
