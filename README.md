@@ -20,14 +20,13 @@ import { domStream, isBlocking } from "pipeable-dom";
 // Get a ReadableStream<Uint8Array> of HTML content from somewhere
 fetch("https://example.com").then(async (response) => {
   // Pipe the HTML content through a TextDecoderStream and then a DOM parser
+  // Get a ReadableStream<Node> of the parsed HTML content
   const stream = response.body
     .pipeThrough(new TextDecoderStream())
     .pipeThrough(domStream());
 
-  // Get a ReadableStream<Node> of the parsed HTML content
-  const reader = stream.getReader();
-
   // Read the parsed nodes as they are available
+  const reader = stream.getReader();
   let result: ReadableStreamReadResult<Node>;
   while (!(result = await reader.read()).done) {
     // Add the node to the document
