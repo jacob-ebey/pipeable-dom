@@ -1,0 +1,59 @@
+# pipeable-dom
+
+Piecewise utilities to stream HTML content into a live document, or wherever else you want to pipe it.
+
+This is a derivative of [@MarkdoDevTeam](https://x.com/MarkoDevTeam)'s [writable-dom](https://github.com/marko-js/writable-dom) that exposes lower-level utilities for working with the streamed HTML content.
+
+## Installation
+
+```bash
+npm install pipeable-dom
+```
+
+## Usage
+
+```typescript
+import { domStream, isBlocking } from "pipeable-dom";
+
+// Get a ReadableStream<Uint8Array> of HTML content from somewhere
+fetch("https://example.com").then(async (response) => {
+  // Pipe the HTML content through a TextDecoderStream and then a DOM parser
+  const stream = response.body
+    .pipeThrough(new TextDecoderStream())
+    .pipeThrough(domStream());
+
+  // Get a ReadableStream<Node> of the parsed HTML content
+  const reader = stream.getReader();
+
+  // Read the parsed nodes as they are available
+  let result: ReadableStreamReadResult<Node>;
+  while (!(result = await reader.read()).done) {
+    // Add the node to the document
+    const node = result.value;
+    document.body.appendChild(node);
+
+    // Wait for blocking nodes to load before continuing to simulate the browser's
+    // initial document loading behavior. This is important for scripts to be executed
+    // in the correct order, and stylesheets to be applied before the content is rendered.
+    if (isBlocking(node)) {
+      await new Promise<void>((resolve) => {
+        node.onload = node.onerror = () => {
+          resolve();
+        };
+      });
+    }
+  }
+});
+```
+
+## API
+
+This module exposes two functions, the TransformStream API, and a utility function for determining if a node is blocking.
+
+### `domStream(): TransformStream<string, Node>`
+
+Creates a TransformStream that parses HTML string chunks into a stream of DOM nodes. These are "live" nodes that can be appended to a document and will update as child content is streamed in.
+
+### `isBlocking(node: Node): node is HTMLLinkElement | HTMLScriptElement`
+
+Determines if a node is a blocking node, such as a `<script>` or `<link>` element. This is useful for waiting for these nodes to load before continuing to stream content. It takes into account the `module`, `async` and `defer` attributes on `<script>` elements, and the `rel` and `media` attribute on `<link>` elements.

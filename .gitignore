@@ -1,0 +1,4 @@
+.DS_Store
+.vitest.config.ts.timestamp*
+dist
+node_modules
