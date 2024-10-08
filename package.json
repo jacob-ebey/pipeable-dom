@@ -1,6 +1,6 @@
 {
   "name": "pipeable-dom",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
   "description": "An HTML parser allowing for HTML to be streamed into a live DOM.",
   "license": "MIT",
@@ -11,7 +11,8 @@
   "exports": {
     ".": {
       "types": "./dist/pipeable-dom.d.ts",
-      "import": "./dist/pipeable-dom.js"
+      "import": "./dist/pipeable-dom.js",
+      "default": "./dist/pipeable-dom.js"
     },
     "./package.json": "./package.json"
   },
