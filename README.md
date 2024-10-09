@@ -96,4 +96,4 @@ Determines if a node is a blocking node, such as a `<script>` or `<link>` elemen
 
 ### `preloadLink(node: Node): HTMLLinkElement | null`
 
-Get a <link> tag to preload <script>, <link>, and <img> tags in a manner similar to how the browser natively preloads during a document request.
+Get a `<link>` tag to preload `<script>`, `<link>`, and `<img>` tags in a manner similar to how the browser natively parses and preloads during a document request.
