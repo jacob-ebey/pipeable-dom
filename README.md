@@ -84,7 +84,7 @@ fetch("https://example.com").then(async (response) => {
 
 ## API
 
-This module exposes two functions, the TransformStream API, and a utility function for determining if a node is blocking.
+This module exposes three functions, the TransformStream API (`domStream`), and two utility functions for determining if a node should be preloaded, and whether or not it is blocking.
 
 ### `domStream(): TransformStream<string, Node>`
 
