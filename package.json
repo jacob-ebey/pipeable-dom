@@ -1,11 +1,13 @@
 {
 	"name": "pipeable-dom",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"type": "module",
 	"description": "An HTML parser allowing for HTML to be streamed into a live DOM.",
 	"license": "MIT",
 	"author": "Jacob Ebey",
 	"files": ["dist"],
+	"types": "dist/pipeable-dom.d.ts",
+	"main": "dist/pipeable-dom.js",
 	"exports": {
 		".": {
 			"types": "./dist/pipeable-dom.d.ts",

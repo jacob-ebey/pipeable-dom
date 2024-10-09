@@ -133,7 +133,7 @@ export let preloadLink = (node: Node): HTMLLinkElement | null => {
 		sizes,
 		integrity,
 		crossOrigin,
-	} = node as HTMLLinkElement & HTMLScriptElement & HTMLImageElement;
+	} = node as HTMLScriptElement & HTMLImageElement & HTMLLinkElement;
 
 	let setLinkAttributes = (href: string, rel: string, as: string) => {
 		link.href = href;
@@ -145,16 +145,18 @@ export let preloadLink = (node: Node): HTMLLinkElement | null => {
 
 	switch (tagName) {
 		case SCRIPT:
-			if (src && !noModule)
+			if (src && !noModule) {
 				setLinkAttributes(
 					src,
-					type === MODULE ? "modulepreload" : PRELOAD,
+					type === "module" ? "modulepreload" : PRELOAD,
 					SCRIPT,
 				);
+			}
 			break;
 		case LINK:
-			if (rel === STYLESHEET && (!media || matchMedia(media).matches))
+			if (rel === STYLESHEET && (!media || matchMedia(media).matches)) {
 				setLinkAttributes(href, PRELOAD, STYLE);
+			}
 			break;
 		case "IMG":
 			link.rel = PRELOAD;
