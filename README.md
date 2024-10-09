@@ -76,6 +76,7 @@ fetch("https://example.com").then(async (response) => {
     flushBuffer();
   }
   readAll = true;
+  flushBuffer();
 
   // Wait for everything to be done.
   await done;

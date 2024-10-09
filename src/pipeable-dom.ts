@@ -96,6 +96,7 @@ export let domStream = (): TransformStream<string, Node> => {
 			}
 
 			doc.close();
+			controller.terminate();
 		},
 	});
 };

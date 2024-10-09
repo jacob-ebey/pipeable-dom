@@ -1,6 +1,6 @@
 {
 	"name": "pipeable-dom",
-	"version": "0.0.4",
+	"version": "0.0.5",
 	"type": "module",
 	"description": "An HTML parser allowing for HTML to be streamed into a live DOM.",
 	"license": "MIT",
