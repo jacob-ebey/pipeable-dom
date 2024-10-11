@@ -81,7 +81,6 @@ export let domStream = (): TransformStream<string, Node> => {
 			if (pendingText && inlineHostNode) {
 				appendChild(inlineHostNode, pendingText);
 			} else if (pendingText) {
-				console.log({ lastSent, pendingText, inlineHostNode });
 				if (lastSent?.[NODE_TYPE] == 3) {
 					lastSent[NODE_VALUE] = pendingText[NODE_VALUE];
 				} else if (lastSent) {
