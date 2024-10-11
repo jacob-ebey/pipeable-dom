@@ -55,8 +55,8 @@ export let domStream = (): TransformStream<string, Node> => {
 					appendChild(inlineHostNode, previousPendingText);
 				inlineHostNode = NULL;
 
+				lastSent = clone;
 				if (!parentNode) {
-					lastSent = clone;
 					controller.enqueue(clone);
 				} else {
 					appendChild(parentNode, clone);
@@ -81,6 +81,7 @@ export let domStream = (): TransformStream<string, Node> => {
 			if (pendingText && inlineHostNode) {
 				appendChild(inlineHostNode, pendingText);
 			} else if (pendingText) {
+				console.log({ lastSent, pendingText, inlineHostNode });
 				if (lastSent?.[NODE_TYPE] == 3) {
 					lastSent[NODE_VALUE] = pendingText[NODE_VALUE];
 				} else if (lastSent) {

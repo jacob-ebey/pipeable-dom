@@ -213,6 +213,30 @@ test("README example usage works", async ({ expect }) => {
 	]);
 });
 
+test("streams nested text one character at a time", async ({ expect }) => {
+	const message = "Please provide a message.";
+	const stream = new ReadableStream<string>({
+		async start(controller) {
+			controller.enqueue(`<div class="message ai-message"><p>`);
+			for (const char of message) {
+				controller.enqueue(char);
+			}
+			controller.enqueue("</p></div>");
+			controller.close();
+		},
+	}).pipeThrough(domStream());
+
+	const target = document.createElement("div");
+	const reader = stream.getReader();
+	let result: ReadableStreamReadResult<Node>;
+	while (!(result = await reader.read()).done) {
+		const node = result.value;
+		target.appendChild(node);
+	}
+	const html = target.innerHTML.trim();
+	expect(html).toBe(`<div class="message ai-message"><p>${message}</p></div>`);
+});
+
 declare global {
 	interface Window {
 		__testScriptExecutionOrder?: string[];
