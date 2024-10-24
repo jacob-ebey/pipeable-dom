@@ -1,0 +1,6 @@
+.DS_Store
+
+__screenshots__
+coverage
+dist
+node_modules
