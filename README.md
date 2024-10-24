@@ -4,9 +4,9 @@ An HTML parser and JSX runtime allowing for HTML to be streamed into a live DOM.
 
 Sizes:
 
-- `pipeable-dom` - ![bundle size image](https://deno.bundlejs.com/badge?q=pipeable-dom@0.0.8)
-- `pipeable-dom/jsx` - ![bundle size image](https://deno.bundlejs.com/badge?q=pipeable-dom@0.0.8/jsx)
-- `pipeable-dom` + `pipeable-dom/jsx` - ![bundle size image](https://deno.bundlejs.com/badge?q=pipeable-dom@0.0.8,pipeable-dom@0.0.8/jsx)
+- `pipeable-dom` - ![bundle size image](https://deno.bundlejs.com/badge?q=pipeable-dom@0.0.10)
+- `pipeable-dom/jsx` - ![bundle size image](https://deno.bundlejs.com/badge?q=pipeable-dom@0.0.10/jsx)
+- `pipeable-dom` + `pipeable-dom/jsx` - ![bundle size image](https://deno.bundlejs.com/badge?q=pipeable-dom@0.0.10,pipeable-dom@0.0.10/jsx)
 
 ## `DOMStream`
 

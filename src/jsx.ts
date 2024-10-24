@@ -23,16 +23,54 @@ export type JSXNode =
 	| Generator<JSXNode, void, unknown>
 	| AsyncGenerator<JSXNode, void, unknown>;
 
-export class JSXRenderError extends Error {
-	constructor(message: string, cause: unknown) {
-		super(message);
-		this.name = "JSXRenderError";
-		this.cause = cause;
-	}
-}
+type SwapType =
+	| "beforebegin"
+	| "afterbegin"
+	| "beforeend"
+	| "afterend"
+	| "outerHTML"
+	| "innerHTML";
 
+const CHILDREN = "children";
 const FUNCTION = "function";
 const OBJECT = "object";
+const INNER_HTML = "innerHTML";
+const OUTER_HTML = "outerHTML";
+
+const entityMap: Record<string, string> = {
+	"&": "&amp;",
+	"<": "&lt;",
+	">": "&gt;",
+	'"': "&quot;",
+	"'": "&#39;",
+	"/": "&#x2F;",
+	"`": "&#x60;",
+	"=": "&#x3D;",
+};
+
+const voidElements = new Set([
+	"area",
+	"base",
+	"br",
+	"col",
+	"embed",
+	"hr",
+	"img",
+	"input",
+	"link",
+	"meta",
+	"param",
+	"source",
+	"track",
+	"wbr",
+]);
+
+const instanceOf = <T extends new (...args: any) => any>(
+	obj: any,
+	Constructor: T,
+): obj is InstanceType<T> => {
+	return obj instanceof Constructor;
+};
 
 const isAsyncGenerator = (obj: any): obj is AsyncGenerator => {
 	return typeof obj == OBJECT && typeof obj?.[Symbol.asyncIterator] == FUNCTION;
@@ -40,31 +78,20 @@ const isAsyncGenerator = (obj: any): obj is AsyncGenerator => {
 
 const isGenerator = (obj: any): obj is Generator => {
 	return (
-		obj !== null &&
-		typeof obj === OBJECT &&
-		typeof obj[Symbol.iterator] === FUNCTION &&
+		obj != null &&
+		typeof obj == OBJECT &&
+		typeof obj[Symbol.iterator] == FUNCTION &&
 		!Array.isArray(obj)
 	);
 };
 
 const escapeHtml = (str: string): string => {
-	const entityMap: Record<string, string> = {
-		"&": "&amp;",
-		"<": "&lt;",
-		">": "&gt;",
-		'"': "&quot;",
-		"'": "&#39;",
-		"/": "&#x2F;",
-		"`": "&#x60;",
-		"=": "&#x3D;",
-	};
-
 	return String(str).replace(/[&<>"'`=\/]/g, (s) => entityMap[s]);
 };
 
 const renderAttributes = (props: JSXProps): string => {
 	return Object.entries(props)
-		.filter(([key]) => key !== "children")
+		.filter(([key]) => key != CHILDREN)
 		.map(([key, value]) => {
 			if (value === true) return ` ${key}`;
 			if (value === false || value == null) return "";
@@ -75,39 +102,6 @@ const renderAttributes = (props: JSXProps): string => {
 			return ` ${key}="${escapeHtml(String(value))}"`;
 		})
 		.join("");
-};
-
-const renderGenerator = async function* (
-	generator: Generator<JSXNode>,
-): AsyncGenerator<string> {
-	for (const chunk of generator) {
-		yield* renderAsync(chunk);
-	}
-};
-
-const renderAsyncGenerator = async function* (
-	generator: AsyncGenerator<JSXNode>,
-): AsyncGenerator<string> {
-	for await (const chunk of generator) {
-		yield* renderAsync(chunk);
-	}
-};
-
-const renderComponent = async function* (
-	component: Component,
-	props: JSXProps = {},
-): AsyncGenerator<string> {
-	const result = component(props);
-
-	if (result instanceof Promise) {
-		yield* renderAsync(await result);
-	} else if (isAsyncGenerator(result)) {
-		yield* renderAsyncGenerator(result);
-	} else if (isGenerator(result)) {
-		yield* renderGenerator(result);
-	} else {
-		yield* renderAsync(result);
-	}
 };
 
 export const renderAsync = async function* (
@@ -121,9 +115,9 @@ export const renderAsync = async function* (
 
 		// Handle primitive types
 		if (
-			typeof node === "string" ||
-			typeof node === "number" ||
-			typeof node === "boolean"
+			typeof node == "string" ||
+			typeof node == "number" ||
+			typeof node == "boolean"
 		) {
 			yield escapeHtml(String(node));
 			return;
@@ -138,20 +132,24 @@ export const renderAsync = async function* (
 		}
 
 		// Handle promises
-		if (node instanceof Promise) {
+		if (instanceOf(node, Promise)) {
 			yield* renderAsync(await (node as any));
 			return;
 		}
 
 		// Handle generators
-		if (isGenerator(node)) {
-			yield* renderGenerator(node);
+		if (/*#__INLINE__*/ isGenerator(node)) {
+			for (const chunk of node) {
+				yield* renderAsync(chunk);
+			}
 			return;
 		}
 
 		// Handle async generators
-		if (isAsyncGenerator(node)) {
-			yield* renderAsyncGenerator(node);
+		if (/*#__INLINE__*/ isAsyncGenerator(node)) {
+			for await (const chunk of node) {
+				yield* renderAsync(chunk);
+			}
 			return;
 		}
 
@@ -160,49 +158,32 @@ export const renderAsync = async function* (
 		const { type, props } = element;
 
 		// Handle function components
-		if (typeof type === FUNCTION) {
-			yield* renderComponent(type as Component, props);
+		if (typeof type == FUNCTION) {
+			yield* renderAsync((type as Component)(props));
 			return;
 		}
 
 		// Handle HTML elements
-		const attributes = renderAttributes(props);
+		const attributes = /*#__INLINE__*/ renderAttributes(props);
 
 		// Handle void elements
-		const voidElements = new Set([
-			"area",
-			"base",
-			"br",
-			"col",
-			"embed",
-			"hr",
-			"img",
-			"input",
-			"link",
-			"meta",
-			"param",
-			"source",
-			"track",
-			"wbr",
-		]);
-
 		if (voidElements.has((type as string).toLowerCase())) {
 			yield `<${type}${attributes}>`;
 			return;
 		}
 
 		yield `<${type}${attributes}>`;
-		yield* renderAsync(props.children);
+		yield* renderAsync(props[CHILDREN]);
 		yield `</${type}>`;
 	} catch (error) {
-		if (error instanceof JSXRenderError) {
+		if (instanceOf(error, JSXRenderError)) {
 			throw error;
 		}
 		throw new JSXRenderError(
 			`Render failed: ${
-				error instanceof Error ? error.message : "Unknown error"
+				instanceOf(error, Error) ? error.message : "Unknown error"
 			}`,
-			error instanceof Error ? error : undefined,
+			instanceOf(error, Error) ? error : undefined,
 		);
 	}
 };
@@ -222,56 +203,37 @@ export const render = (node: JSXNode): ReadableStream<string> => {
 	});
 };
 
-export function jsx(
+export const jsx = (
 	type: string | Component,
 	props?: JSXProps,
-): JSXElementStructure {
+): JSXElementStructure => {
 	return {
 		type,
 		props: props ?? {},
 	};
-}
+};
 
-export { jsx as jsxs, jsx as jsxDEV };
-
-export const Fragment: Component = ({ children }: JSXProps): JSXNode =>
-	children;
-
-type SwapType =
-	| "beforebegin"
-	| "afterbegin"
-	| "beforeend"
-	| "afterend"
-	| "outerHTML"
-	| "innerHTML";
+export const Fragment: Component = (props: JSXProps): JSXNode =>
+	props[CHILDREN];
 
 export const swap = async (
 	target: Element,
 	swap: SwapType,
 	newContent: JSXNode,
 ) => {
-	swap = swap || "outerHTML";
+	swap = swap || OUTER_HTML;
 	let insertBefore: Node = document.createComment("");
 
-	switch (swap) {
-		case "afterbegin":
-			target.prepend(insertBefore);
-			break;
-		case "afterend":
-			target.after(insertBefore);
-			break;
-		case "beforebegin":
-			target.before(insertBefore);
-			break;
-		case "beforeend":
-			target.append(insertBefore);
-			break;
-		case "outerHTML":
-			break;
-		case "innerHTML":
-			break;
-		default:
-			throw new Error(`Unknown swap value: ${swap}`);
+	if (swap == "afterbegin") {
+		target.prepend(insertBefore);
+	} else if (swap == "afterend") {
+		target.after(insertBefore);
+	} else if (swap == "beforebegin") {
+		target.before(insertBefore);
+	} else if (swap == "beforeend") {
+		target.append(insertBefore);
+	} else if (swap != OUTER_HTML && swap != INNER_HTML) {
+		throw new Error(`Unknown swap value: ${swap}`);
 	}
 
 	try {
@@ -282,10 +244,10 @@ export const swap = async (
 				new WritableStream({
 					write(node) {
 						if (!processedFirstChunk) {
-							if (swap == "outerHTML") {
+							if (swap == OUTER_HTML) {
 								target!.after(insertBefore);
 								target!.remove();
-							} else if (swap == "innerHTML") {
+							} else if (swap == INNER_HTML) {
 								target!.innerHTML = "";
 								target!.append(insertBefore);
 							}
@@ -302,3 +264,12 @@ export const swap = async (
 		}
 	}
 };
+
+export class JSXRenderError extends Error {
+	constructor(message: string, cause: unknown) {
+		super(message);
+		this.name = "JSXRenderError";
+		this.cause = cause;
+	}
+}
+export { jsx as jsxs, jsx as jsxDEV };

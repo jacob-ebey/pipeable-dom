@@ -1,6 +1,6 @@
 {
 	"name": "pipeable-dom",
-	"version": "0.0.9",
+	"version": "0.0.10",
 	"type": "module",
 	"description": "",
 	"files": ["dist"],
