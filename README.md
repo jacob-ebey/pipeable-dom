@@ -1,6 +1,6 @@
 # pipeable-dom
 
-Utilities to stream HTML content into a live document, or wherever else you want to pipe it.
+An HTML parser and JSX runtime allowing for HTML to be streamed into a live DOM.
 
 Sizes:
 
