@@ -275,19 +275,23 @@ export const swap = async (
 	}
 
 	try {
-		if (swap == "outerHTML") {
-			target!.after(insertBefore);
-			target!.remove();
-		} else if (swap == "innerHTML") {
-			target!.innerHTML = "";
-			target!.append(insertBefore);
-		}
-
+		let processedFirstChunk = false;
 		await render(newContent)
 			.pipeThrough(new DOMStream())
 			.pipeTo(
 				new WritableStream({
 					write(node) {
+						if (!processedFirstChunk) {
+							if (swap == "outerHTML") {
+								target!.after(insertBefore);
+								target!.remove();
+							} else if (swap == "innerHTML") {
+								target!.innerHTML = "";
+								target!.append(insertBefore);
+							}
+							processedFirstChunk = true;
+						}
+
 						insertBefore.parentElement!.insertBefore(node, insertBefore);
 					},
 				}),
