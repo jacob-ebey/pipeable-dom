@@ -2,6 +2,12 @@
 
 Utilities to stream HTML content into a live document, or wherever else you want to pipe it.
 
+Sizes:
+
+- `pipeable-dom` - ![bundle size image](https://deno.bundlejs.com/badge?q=pipeable-dom@0.0.8)
+- `pipeable-dom/jsx` - ![bundle size image](https://deno.bundlejs.com/badge?q=pipeable-dom@0.0.8/jsx)
+- `pipeable-dom` + `pipeable-dom/jsx` - ![bundle size image](https://deno.bundlejs.com/badge?q=pipeable-dom@0.0.8,pipeable-dom@0.0.8/jsx)
+
 ## `DOMStream`
 
 A `TransformStream<string, Node>` that implements lookahead preloading and browser document request rendering semantics.
