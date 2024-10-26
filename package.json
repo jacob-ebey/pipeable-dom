@@ -1,6 +1,6 @@
 {
 	"name": "pipeable-dom",
-	"version": "0.0.10",
+	"version": "0.0.11",
 	"type": "module",
 	"description": "",
 	"files": ["dist"],
@@ -9,22 +9,34 @@
 	"exports": {
 		".": {
 			"types": "./dist/pipeable-dom.d.ts",
-			"module-sync": "./dist/pipeable-dom.js",
+			"node": {
+				"module-sync": "./dist/pipeable-dom.js",
+				"default": "./dist/pipeable-dom.cjs"
+			},
 			"default": "./dist/pipeable-dom.js"
 		},
 		"./jsx": {
 			"types": "./dist/jsx.d.ts",
-			"module-sync": "./dist/jsx.js",
+			"node": {
+				"module-sync": "./dist/jsx.js",
+				"default": "./dist/jsx.cjs"
+			},
 			"default": "./dist/jsx.js"
 		},
 		"./jsx-runtime": {
 			"types": "./dist/jsx.d.ts",
-			"module-sync": "./dist/jsx.js",
+			"node": {
+				"module-sync": "./dist/jsx.js",
+				"default": "./dist/jsx.cjs"
+			},
 			"default": "./dist/jsx.js"
 		},
 		"./jsx-dev-runtime": {
 			"types": "./dist/jsx.d.ts",
-			"module-sync": "./dist/jsx.js",
+			"node": {
+				"module-sync": "./dist/jsx.js",
+				"default": "./dist/jsx.cjs"
+			},
 			"default": "./dist/jsx.js"
 		}
 	},
