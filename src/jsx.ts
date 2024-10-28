@@ -1,4 +1,3 @@
-
 export type { JSX } from "./jsx-types.js";
 
 export type JSXPrimitive = string | number | boolean | null | undefined;
@@ -107,9 +106,13 @@ export const renderAsync = async function* (
 		if (
 			typeof node == "string" ||
 			typeof node == "number" ||
-			typeof node == "boolean"
+			(typeof node == "boolean" && node)
 		) {
 			yield escapeHtml(String(node));
+			return;
+		}
+
+		if (!node) {
 			return;
 		}
 

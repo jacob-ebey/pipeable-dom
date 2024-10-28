@@ -20,7 +20,7 @@ describe("JSX Runtime", () => {
 			expect(await collectOutput(renderAsync("hello"))).toBe("hello");
 			expect(await collectOutput(renderAsync(42))).toBe("42");
 			expect(await collectOutput(renderAsync(true))).toBe("true");
-			expect(await collectOutput(renderAsync(false))).toBe("false");
+			expect(await collectOutput(renderAsync(false))).toBe("");
 			expect(await collectOutput(renderAsync(null))).toBe("");
 			expect(await collectOutput(renderAsync(undefined))).toBe("");
 		});
@@ -33,9 +33,7 @@ describe("JSX Runtime", () => {
 			expect(await collectOutput(renderAsync(Promise.resolve(true)))).toBe(
 				"true",
 			);
-			expect(await collectOutput(renderAsync(Promise.resolve(false)))).toBe(
-				"false",
-			);
+			expect(await collectOutput(renderAsync(Promise.resolve(false)))).toBe("");
 			expect(await collectOutput(renderAsync(Promise.resolve(null)))).toBe("");
 			expect(await collectOutput(renderAsync(Promise.resolve(undefined)))).toBe(
 				"",
