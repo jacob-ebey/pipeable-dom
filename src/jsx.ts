@@ -20,6 +20,10 @@ export { jsx as jsxDEV, jsx as jsxs };
 const CHILDREN = "children";
 const FUNCTION = "function";
 const OBJECT = "object";
+const ITERATOR = "iterator";
+const SYMBOL = Symbol;
+const SYMBOL_ITERATOR = SYMBOL[ITERATOR];
+const SYMBOL_ASYNC_ITERATOR = SYMBOL.asyncIterator;
 
 const entityMap: Record<string, string> = {
 	"&": "&amp;",
@@ -57,14 +61,16 @@ const instanceOf = <T extends new (...args: any) => any>(
 };
 
 const isAsyncGenerator = (obj: any): obj is AsyncGenerator => {
-	return typeof obj == OBJECT && typeof obj?.[Symbol.asyncIterator] == FUNCTION;
+	return (
+		typeof obj == OBJECT && typeof obj?.[SYMBOL_ASYNC_ITERATOR] == FUNCTION
+	);
 };
 
 const isGenerator = (obj: any): obj is Generator => {
 	return (
 		obj != null &&
 		typeof obj == OBJECT &&
-		typeof obj[Symbol.iterator] == FUNCTION &&
+		typeof obj[SYMBOL_ITERATOR] == FUNCTION &&
 		!Array.isArray(obj)
 	);
 };
@@ -96,91 +102,154 @@ const renderAttributes = (props: JSXProps): string => {
 		.join("");
 };
 
+type RenderStackItem = {
+	node: JSXNode;
+	phase: "start" | "children" | "end";
+	isArray?: boolean;
+	arrayIndex?: number;
+	type?: string | Component;
+	props?: JSXProps;
+	iterator?: Generator | AsyncGenerator;
+};
+
 export const renderAsync = async function* (
-	node: JSXNode,
+	initialNode: JSXNode,
 ): AsyncGenerator<string> {
-	try {
-		// Handle null/undefined
-		if (node == null) {
-			return;
-		}
+	const stack: RenderStackItem[] = [{ node: initialNode, phase: "start" }];
 
-		// Handle primitive types
-		if (
-			typeof node == "string" ||
-			typeof node == "number" ||
-			(typeof node == "boolean" && node)
-		) {
-			yield escapeHtml(String(node));
-			return;
-		}
+	const pop = () => stack.pop();
+	const push = (item: RenderStackItem) => stack.push(item);
 
-		if (!node) {
-			return;
-		}
+	while (stack.length > 0) {
+		try {
+			const current = stack[stack.length - 1];
+			const { node, phase } = current;
 
-		// Handle arrays
-		if (Array.isArray(node)) {
-			for (const item of node) {
-				yield* renderAsync(item);
+			if (node == null || node === false) {
+				stack.pop();
+				continue;
 			}
-			return;
-		}
 
-		// Handle promises
-		if (instanceOf(node, Promise)) {
-			yield* renderAsync(await (node as any));
-			return;
-		}
-
-		// Handle generators
-		if (/*#__INLINE__*/ isGenerator(node)) {
-			for (const chunk of node) {
-				yield* renderAsync(chunk);
+			// Handle primitive types
+			if (
+				typeof node === "string" ||
+				typeof node === "number" ||
+				(typeof node === "boolean" && node)
+			) {
+				yield escapeHtml(String(node));
+				pop();
+				continue;
 			}
-			return;
-		}
 
-		// Handle async generators
-		if (/*#__INLINE__*/ isAsyncGenerator(node)) {
-			for await (const chunk of node) {
-				yield* renderAsync(chunk);
+			// Handle arrays
+			if (Array.isArray(node)) {
+				if (phase === "start") {
+					current.isArray = true;
+					current.arrayIndex = 0;
+					current.phase = "children";
+					if (node.length > 0) {
+						push({ node: node[0], phase: "start" });
+					}
+				} else {
+					if (current.arrayIndex! < node.length - 1) {
+						current.arrayIndex!++;
+						push({
+							node: node[current.arrayIndex!],
+							phase: "start",
+						});
+					} else {
+						pop();
+					}
+				}
+				continue;
 			}
-			return;
+
+			// Handle promises
+			if (instanceOf(node, Promise)) {
+				const resolvedValue = await (node as any);
+				pop();
+				push({ node: resolvedValue, phase: "start" });
+				continue;
+			}
+
+			// Handle async generators
+			if (
+				/*#__INLINE__*/ isGenerator(node) ||
+				/*#__INLINE__*/ isAsyncGenerator(node)
+			) {
+				if (phase === "start") {
+					const iterator: AsyncGenerator<JSXNode, any, any> =
+						(node as any)[SYMBOL_ASYNC_ITERATOR]?.() ??
+						(node as any)[SYMBOL_ITERATOR]();
+					current[ITERATOR] = iterator;
+					current.phase = "children";
+					const result = await iterator.next();
+					if (!result.done) {
+						push({ node: result.value, phase: "start" });
+					} else {
+						pop();
+					}
+				} else {
+					const result = await (
+						current[ITERATOR] as AsyncGenerator<JSXNode, any, any>
+					).next();
+					if (!result.done) {
+						push({ node: result.value, phase: "start" });
+					} else {
+						pop();
+					}
+				}
+				continue;
+			}
+
+			// Handle JSX elements
+			const element = node as JSXElementStructure;
+			const { type, props } = element;
+
+			// Handle function components
+			if (typeof type === FUNCTION) {
+				const result = (type as Component)(props);
+				stack.pop();
+				stack.push({ node: result, phase: "start" });
+				continue;
+			}
+
+			// Handle HTML elements
+			switch (phase) {
+				case "start": {
+					const attributes = /*#__INLINE__*/ renderAttributes(props);
+					yield `<${type}${attributes}>`;
+
+					if (voidElements.has((type as string).toLowerCase())) {
+						stack.pop();
+					} else {
+						current.phase = "children";
+						current.type = type;
+						current.props = props;
+						if (props[CHILDREN]) {
+							stack.push({ node: props[CHILDREN], phase: "start" });
+						}
+					}
+					break;
+				}
+				case "children": {
+					current.phase = "end";
+					yield `</${current.type}>`;
+					stack.pop();
+					break;
+				}
+			}
+		} catch (error) {
+			if (instanceOf(error, JSXRenderError)) {
+				throw error;
+			}
+			throw new JSXRenderError(
+				`Render failed: ${
+					instanceOf(error, Error) ? error.message : "Unknown error"
+				}`,
+				instanceOf(error, Error) ? error : undefined,
+			);
 		}
-
-		// Handle JSX elements
-		const element = node as JSXElementStructure;
-		const { type, props } = element;
-
-		// Handle function components
-		if (typeof type == FUNCTION) {
-			yield* renderAsync((type as Component)(props));
-			return;
-		}
-
-		// Handle HTML elements
-		const attributes = /*#__INLINE__*/ renderAttributes(props);
-
-		// Handle void elements
-		if (voidElements.has((type as string).toLowerCase())) {
-			yield `<${type}${attributes}>`;
-			return;
-		}
-
-		yield `<${type}${attributes}>`;
-		yield* renderAsync(props[CHILDREN]);
-		yield `</${type}>`;
-	} catch (error) {
-		if (instanceOf(error, JSXRenderError)) {
-			throw error;
-		}
-		throw new JSXRenderError(
-			`Render failed: ${
-				instanceOf(error, Error) ? error.message : "Unknown error"
-			}`,
-			instanceOf(error, Error) ? error : undefined,
-		);
 	}
 };
 

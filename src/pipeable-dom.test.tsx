@@ -140,7 +140,7 @@ test("can be used with streaming JSX", async ({ expect, task }) => {
 	});
 	const Comp = async function* () {
 		yield <div>hello</div>;
-		resolveFirstChunk();
+		await Promise.resolve().then(resolveFirstChunk);
 		yield <div>world</div>;
 	};
 	const stream = jsxStream(task, <Comp />);
