@@ -44,7 +44,7 @@ sequenceDiagram
 
 This is a derivative of [@MarkdoDevTeam](https://x.com/MarkoDevTeam)'s [writable-dom](https://github.com/marko-js/writable-dom).
 
-## `import "jsx"`
+## `import "pipeable-dom/browser"`
 
 A stateless JSX runtime that renders to an async HTML stream.
 

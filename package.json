@@ -1,6 +1,6 @@
 {
 	"name": "pipeable-dom",
-	"version": "0.0.14",
+	"version": "0.0.15",
 	"type": "module",
 	"description": "",
 	"files": ["dist"],
@@ -14,6 +14,14 @@
 				"default": "./dist/pipeable-dom.cjs"
 			},
 			"default": "./dist/pipeable-dom.js"
+		},
+		"./browser": {
+			"types": "./dist/browser.d.ts",
+			"node": {
+				"module-sync": "./dist/browser.js",
+				"default": "./dist/browser.cjs"
+			},
+			"default": "./dist/browser.js"
 		},
 		"./jsx": {
 			"types": "./dist/jsx.d.ts",

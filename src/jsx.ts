@@ -1,4 +1,4 @@
-import { DOMStream } from "pipeable-dom";
+
 export type { JSX } from "./jsx-types.js";
 
 export type JSXPrimitive = string | number | boolean | null | undefined;
@@ -23,19 +23,9 @@ export type JSXNode =
 	| Generator<JSXNode, void, unknown>
 	| AsyncGenerator<JSXNode, void, unknown>;
 
-export type SwapType =
-	| "beforebegin"
-	| "afterbegin"
-	| "beforeend"
-	| "afterend"
-	| "outerHTML"
-	| "innerHTML";
-
 const CHILDREN = "children";
 const FUNCTION = "function";
 const OBJECT = "object";
-const INNER_HTML = "innerHTML";
-const OUTER_HTML = "outerHTML";
 
 const entityMap: Record<string, string> = {
 	"&": "&amp;",
@@ -215,55 +205,6 @@ export const jsx = (
 
 export const Fragment: Component = (props: JSXProps): JSXNode =>
 	props[CHILDREN];
-
-export const swap = async (
-	target: Element,
-	swap: SwapType,
-	newContent: JSXNode,
-) => {
-	swap = swap || OUTER_HTML;
-	let insertBefore: Node = document.createComment("");
-
-	if (swap == "afterbegin") {
-		target.prepend(insertBefore);
-	} else if (swap == "afterend") {
-		target.after(insertBefore);
-	} else if (swap == "beforebegin") {
-		target.before(insertBefore);
-	} else if (swap == "beforeend") {
-		target.append(insertBefore);
-	} else if (swap != OUTER_HTML && swap != INNER_HTML) {
-		throw new Error(`Unknown swap value: ${swap}`);
-	}
-
-	try {
-		let processedFirstChunk = false;
-		await render(newContent)
-			.pipeThrough(new DOMStream())
-			.pipeTo(
-				new WritableStream({
-					write(node) {
-						if (!processedFirstChunk) {
-							if (swap == OUTER_HTML) {
-								target!.after(insertBefore);
-								target!.remove();
-							} else if (swap == INNER_HTML) {
-								target!.innerHTML = "";
-								target!.append(insertBefore);
-							}
-							processedFirstChunk = true;
-						}
-
-						insertBefore.parentElement!.insertBefore(node, insertBefore);
-					},
-				}),
-			);
-	} finally {
-		if (insertBefore?.parentElement) {
-			insertBefore.parentElement.removeChild(insertBefore);
-		}
-	}
-};
 
 export class JSXRenderError extends Error {
 	constructor(message: string, cause: unknown) {
