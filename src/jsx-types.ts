@@ -186,6 +186,8 @@ export declare namespace JSX {
 	}
 
 	interface IntrinsicElements {
+		[element: string]: HTMLAttributes;
+
 		// Main root
 		html: HTMLAttributes & {
 			lang?: null | string;
