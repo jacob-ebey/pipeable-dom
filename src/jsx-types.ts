@@ -183,8 +183,6 @@ export declare namespace JSX {
 		onvolumechange?: null | string;
 		onwaiting?: null | string;
 		onwheel?: null | string;
-
-		[attribute: string]: string | number | boolean | null | undefined;
 	}
 
 	interface IntrinsicElements {
@@ -520,7 +518,5 @@ export declare namespace JSX {
 			headers?: null | string;
 			rowspan?: null | number;
 		};
-
-		[element: string]: HTMLAttributes;
 	}
 }
