@@ -60,8 +60,8 @@ describe("JSX Runtime", () => {
 
 		it("renders server references as attributes", async () => {
 			const serverAction = () => {};
-			serverAction.$$typeof = Symbol.for("server.reference");
-			serverAction.$$id = "?action-123";
+			serverAction.$$typeof = Symbol.for("server.action");
+			serverAction.$$action = "?action-123";
 			const element = jsx("form", {
 				action: serverAction,
 			});

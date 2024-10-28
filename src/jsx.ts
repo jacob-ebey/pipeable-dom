@@ -85,10 +85,10 @@ const renderAttributes = (props: JSXProps): string => {
 			if (
 				value &&
 				"$$typeof" &&
-				value.$$typeof == Symbol.for("server.reference") &&
-				"$$id" in value
+				value.$$typeof == Symbol.for("server.action") &&
+				"$$action" in value
 			) {
-				value = value.$$id;
+				value = value.$$action;
 			}
 			if (typeof value == FUNCTION) return "";
 			return ` ${key}="${escapeHtml(String(value))}"`;
