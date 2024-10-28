@@ -58,6 +58,18 @@ describe("JSX Runtime", () => {
 			);
 		});
 
+		it("renders server references as attributes", async () => {
+			const serverAction = () => {};
+			serverAction.$$typeof = Symbol.for("server.reference");
+			serverAction.$$id = "?action-123";
+			const element = jsx("form", {
+				action: serverAction,
+			});
+			expect(await collectOutput(renderAsync(element))).toBe(
+				'<form action="?action-123"></form>',
+			);
+		});
+
 		it("handles void elements correctly", async () => {
 			const elements = [
 				jsx("img", { src: "test.jpg", alt: "test" }),
@@ -237,7 +249,7 @@ describe("JSX Runtime", () => {
 
 		it("handles event handlers correctly", async () => {
 			const handler = () => console.log("click");
-			const element = jsx("button", { onClick: handler });
+			const element = jsx("button", { onclick: handler });
 
 			expect(await collectOutput(renderAsync(element))).toBe(
 				"<button></button>",

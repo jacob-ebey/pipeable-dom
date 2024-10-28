@@ -1,26 +1,21 @@
-export type { JSX } from "./jsx-types.js";
+import type {
+	Component,
+	JSX,
+	JSXElementStructure,
+	JSXNode,
+	JSXPrimitive,
+	JSXProps,
+} from "./jsx-types.js";
 
-export type JSXPrimitive = string | number | boolean | null | undefined;
-
-export interface JSXProps {
-	children?: JSXNode;
-	[key: string]: any;
-}
-
-export interface JSXElementStructure {
-	type: string | Component;
-	props: JSXProps;
-}
-
-export type Component = (props: any) => JSXNode;
-
-export type JSXNode =
-	| JSXPrimitive
-	| JSXElementStructure
-	| Array<JSXNode>
-	| Promise<JSXNode>
-	| Generator<JSXNode, void, unknown>
-	| AsyncGenerator<JSXNode, void, unknown>;
+export type {
+	Component,
+	JSX,
+	JSXElementStructure,
+	JSXNode,
+	JSXPrimitive,
+	JSXProps,
+};
+export { jsx as jsxDEV, jsx as jsxs };
 
 const CHILDREN = "children";
 const FUNCTION = "function";
@@ -84,10 +79,18 @@ const renderAttributes = (props: JSXProps): string => {
 		.map(([key, value]) => {
 			if (value === true) return ` ${key}`;
 			if (value === false || value == null) return "";
-			if (typeof value == FUNCTION) return "";
 			if (typeof value == OBJECT) {
 				value = JSON.stringify(value);
 			}
+			if (
+				value &&
+				"$$typeof" &&
+				value.$$typeof == Symbol.for("server.reference") &&
+				"$$id" in value
+			) {
+				value = value.$$id;
+			}
+			if (typeof value == FUNCTION) return "";
 			return ` ${key}="${escapeHtml(String(value))}"`;
 		})
 		.join("");
@@ -216,4 +219,3 @@ export class JSXRenderError extends Error {
 		this.cause = cause;
 	}
 }
-export { jsx as jsxs, jsx as jsxDEV };

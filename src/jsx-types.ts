@@ -1,3 +1,29 @@
+export type JSXPrimitive = string | number | boolean | null | undefined;
+
+export interface JSXProps {
+	children?: JSXNode;
+	[key: string]: any;
+}
+
+export interface JSXElementStructure {
+	type: string | Component;
+	props: JSXProps;
+}
+
+export type Component = (props: any) => JSXNode;
+
+export type JSXNode =
+	| JSXPrimitive
+	| JSXElementStructure
+	| Array<JSXNode>
+	| Promise<JSXNode>
+	| Generator<JSXNode, void, unknown>
+	| AsyncGenerator<JSXNode, void, unknown>;
+
+export type ActionFunction = (
+	request: Request,
+) => Promise<JSXNode | Response> | JSXNode | Response;
+
 export declare namespace JSX {
 	type HTMLAttributeAnchorTarget = "_self" | "_blank" | "_parent" | "_top";
 	type HTMLInputTypeAttribute =
@@ -308,7 +334,7 @@ export declare namespace JSX {
 		// Forms
 		form: HTMLAttributes & {
 			acceptCharset?: null | string;
-			action?: null | string;
+			action?: null | string | ActionFunction;
 			autocomplete?: null | string;
 			enctype?: null | string;
 			method?: null | "get" | "post";
@@ -328,7 +354,7 @@ export declare namespace JSX {
 			dirname?: null | string;
 			disabled?: null | boolean;
 			form?: null | string;
-			formaction?: null | string;
+			formaction?: null | string | ActionFunction;
 			formenctype?: null | string;
 			formmethod?: null | string;
 			formnovalidate?: null | boolean;
@@ -356,7 +382,7 @@ export declare namespace JSX {
 			autofocus?: null | boolean;
 			disabled?: null | boolean;
 			form?: null | string;
-			formaction?: null | string;
+			formaction?: null | string | ActionFunction;
 			formenctype?: null | string;
 			formmethod?: null | string;
 			formnovalidate?: null | boolean;
