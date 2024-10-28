@@ -26,31 +26,31 @@ export declare namespace JSX {
 
 	interface HTMLAttributes {
 		// Global HTML attributes
-		accesskey?: string;
-		class?: string;
-		contenteditable?: boolean | "true" | "false";
-		dir?: "ltr" | "rtl" | "auto";
-		draggable?: boolean | "true" | "false";
-		hidden?: boolean;
-		id?: string;
-		lang?: string;
-		spellcheck?: boolean | "true" | "false";
-		style?: string;
-		tabindex?: number;
-		title?: string;
-		translate?: "yes" | "no";
+		accesskey?: null | string;
+		class?: null | string;
+		contenteditable?: null | boolean | "true" | "false";
+		dir?: null | "ltr" | "rtl" | "auto";
+		draggable?: null | boolean | "true" | "false";
+		hidden?: null | boolean;
+		id?: null | string;
+		lang?: null | string;
+		spellcheck?: null | boolean | "true" | "false";
+		style?: null | string;
+		tabindex?: null | number;
+		title?: null | string;
+		translate?: null | "yes" | "no";
 
 		// ARIA attributes
-		role?: string;
-		"aria-activedescendant"?: string;
-		"aria-atomic"?: boolean | "true" | "false";
-		"aria-autocomplete"?: "none" | "inline" | "list" | "both";
-		"aria-busy"?: boolean | "true" | "false";
-		"aria-checked"?: boolean | "true" | "false" | "mixed";
-		"aria-colcount"?: number;
-		"aria-colindex"?: number;
-		"aria-colspan"?: number;
-		"aria-controls"?: string;
+		role?: null | string;
+		"aria-activedescendant"?: null | string;
+		"aria-atomic"?: null | boolean | "true" | "false";
+		"aria-autocomplete"?: null | "none" | "inline" | "list" | "both";
+		"aria-busy"?: null | boolean | "true" | "false";
+		"aria-checked"?: null | boolean | "true" | "false" | "mixed";
+		"aria-colcount"?: null | number;
+		"aria-colindex"?: null | number;
+		"aria-colspan"?: null | number;
+		"aria-controls"?: null | string;
 		"aria-current"?:
 			| boolean
 			| "true"
@@ -60,14 +60,21 @@ export declare namespace JSX {
 			| "location"
 			| "date"
 			| "time";
-		"aria-describedby"?: string;
-		"aria-details"?: string;
-		"aria-disabled"?: boolean | "true" | "false";
-		"aria-dropeffect"?: "none" | "copy" | "execute" | "link" | "move" | "popup";
-		"aria-errormessage"?: string;
-		"aria-expanded"?: boolean | "true" | "false";
-		"aria-flowto"?: string;
-		"aria-grabbed"?: boolean | "true" | "false";
+		"aria-describedby"?: null | string;
+		"aria-details"?: null | string;
+		"aria-disabled"?: null | boolean | "true" | "false";
+		"aria-dropeffect"?:
+			| null
+			| "none"
+			| "copy"
+			| "execute"
+			| "link"
+			| "move"
+			| "popup";
+		"aria-errormessage"?: null | string;
+		"aria-expanded"?: null | boolean | "true" | "false";
+		"aria-flowto"?: null | string;
+		"aria-grabbed"?: null | boolean | "true" | "false";
 		"aria-haspopup"?:
 			| boolean
 			| "true"
@@ -77,22 +84,22 @@ export declare namespace JSX {
 			| "tree"
 			| "grid"
 			| "dialog";
-		"aria-hidden"?: boolean | "true" | "false";
-		"aria-invalid"?: boolean | "true" | "false" | "grammar" | "spelling";
-		"aria-keyshortcuts"?: string;
-		"aria-label"?: string;
-		"aria-labelledby"?: string;
-		"aria-level"?: number;
-		"aria-live"?: "off" | "assertive" | "polite";
-		"aria-modal"?: boolean | "true" | "false";
-		"aria-multiline"?: boolean | "true" | "false";
-		"aria-multiselectable"?: boolean | "true" | "false";
-		"aria-orientation"?: "horizontal" | "vertical";
-		"aria-owns"?: string;
-		"aria-placeholder"?: string;
-		"aria-posinset"?: number;
-		"aria-pressed"?: boolean | "true" | "false" | "mixed";
-		"aria-readonly"?: boolean | "true" | "false";
+		"aria-hidden"?: null | boolean | "true" | "false";
+		"aria-invalid"?: null | boolean | "true" | "false" | "grammar" | "spelling";
+		"aria-keyshortcuts"?: null | string;
+		"aria-label"?: null | string;
+		"aria-labelledby"?: null | string;
+		"aria-level"?: null | number;
+		"aria-live"?: null | "off" | "assertive" | "polite";
+		"aria-modal"?: null | boolean | "true" | "false";
+		"aria-multiline"?: null | boolean | "true" | "false";
+		"aria-multiselectable"?: null | boolean | "true" | "false";
+		"aria-orientation"?: null | "horizontal" | "vertical";
+		"aria-owns"?: null | string;
+		"aria-placeholder"?: null | string;
+		"aria-posinset"?: null | number;
+		"aria-pressed"?: null | boolean | "true" | "false" | "mixed";
+		"aria-readonly"?: null | boolean | "true" | "false";
 		"aria-relevant"?:
 			| "additions"
 			| "additions removals"
@@ -104,112 +111,114 @@ export declare namespace JSX {
 			| "text"
 			| "text additions"
 			| "text removals";
-		"aria-required"?: boolean | "true" | "false";
-		"aria-roledescription"?: string;
-		"aria-rowcount"?: number;
-		"aria-rowindex"?: number;
-		"aria-rowspan"?: number;
-		"aria-selected"?: boolean | "true" | "false";
-		"aria-setsize"?: number;
-		"aria-sort"?: "none" | "ascending" | "descending" | "other";
-		"aria-valuemax"?: number;
-		"aria-valuemin"?: number;
-		"aria-valuenow"?: number;
-		"aria-valuetext"?: string;
+		"aria-required"?: null | boolean | "true" | "false";
+		"aria-roledescription"?: null | string;
+		"aria-rowcount"?: null | number;
+		"aria-rowindex"?: null | number;
+		"aria-rowspan"?: null | number;
+		"aria-selected"?: null | boolean | "true" | "false";
+		"aria-setsize"?: null | number;
+		"aria-sort"?: null | "none" | "ascending" | "descending" | "other";
+		"aria-valuemax"?: null | number;
+		"aria-valuemin"?: null | number;
+		"aria-valuenow"?: null | number;
+		"aria-valuetext"?: null | string;
 
 		// Event handlers
-		onabort?: string;
-		onblur?: string;
-		oncancel?: string;
-		oncanplay?: string;
-		oncanplaythrough?: string;
-		onchange?: string;
-		onclick?: string;
-		onclose?: string;
-		oncontextmenu?: string;
-		oncuechange?: string;
-		ondblclick?: string;
-		ondrag?: string;
-		ondragend?: string;
-		ondragenter?: string;
-		ondragleave?: string;
-		ondragover?: string;
-		ondragstart?: string;
-		ondrop?: string;
-		ondurationchange?: string;
-		onemptied?: string;
-		onended?: string;
-		onerror?: string;
-		onfocus?: string;
-		oninput?: string;
-		oninvalid?: string;
-		onkeydown?: string;
-		onkeypress?: string;
-		onkeyup?: string;
-		onload?: string;
-		onloadeddata?: string;
-		onloadedmetadata?: string;
-		onloadstart?: string;
-		onmousedown?: string;
-		onmouseenter?: string;
-		onmouseleave?: string;
-		onmousemove?: string;
-		onmouseout?: string;
-		onmouseover?: string;
-		onmouseup?: string;
-		onpause?: string;
-		onplay?: string;
-		onplaying?: string;
-		onprogress?: string;
-		onratechange?: string;
-		onreset?: string;
-		onresize?: string;
-		onscroll?: string;
-		onseeked?: string;
-		onseeking?: string;
-		onselect?: string;
-		onstalled?: string;
-		onsubmit?: string;
-		onsuspend?: string;
-		ontimeupdate?: string;
-		ontoggle?: string;
-		onvolumechange?: string;
-		onwaiting?: string;
-		onwheel?: string;
+		onabort?: null | string;
+		onblur?: null | string;
+		oncancel?: null | string;
+		oncanplay?: null | string;
+		oncanplaythrough?: null | string;
+		onchange?: null | string;
+		onclick?: null | string;
+		onclose?: null | string;
+		oncontextmenu?: null | string;
+		oncuechange?: null | string;
+		ondblclick?: null | string;
+		ondrag?: null | string;
+		ondragend?: null | string;
+		ondragenter?: null | string;
+		ondragleave?: null | string;
+		ondragover?: null | string;
+		ondragstart?: null | string;
+		ondrop?: null | string;
+		ondurationchange?: null | string;
+		onemptied?: null | string;
+		onended?: null | string;
+		onerror?: null | string;
+		onfocus?: null | string;
+		oninput?: null | string;
+		oninvalid?: null | string;
+		onkeydown?: null | string;
+		onkeypress?: null | string;
+		onkeyup?: null | string;
+		onload?: null | string;
+		onloadeddata?: null | string;
+		onloadedmetadata?: null | string;
+		onloadstart?: null | string;
+		onmousedown?: null | string;
+		onmouseenter?: null | string;
+		onmouseleave?: null | string;
+		onmousemove?: null | string;
+		onmouseout?: null | string;
+		onmouseover?: null | string;
+		onmouseup?: null | string;
+		onpause?: null | string;
+		onplay?: null | string;
+		onplaying?: null | string;
+		onprogress?: null | string;
+		onratechange?: null | string;
+		onreset?: null | string;
+		onresize?: null | string;
+		onscroll?: null | string;
+		onseeked?: null | string;
+		onseeking?: null | string;
+		onselect?: null | string;
+		onstalled?: null | string;
+		onsubmit?: null | string;
+		onsuspend?: null | string;
+		ontimeupdate?: null | string;
+		ontoggle?: null | string;
+		onvolumechange?: null | string;
+		onwaiting?: null | string;
+		onwheel?: null | string;
+
+		[attribute: string]: string | number | boolean | null | undefined;
 	}
 
 	interface IntrinsicElements {
 		// Main root
 		html: HTMLAttributes & {
-			lang?: string;
-			manifest?: string;
-			xmlns?: string;
+			lang?: null | string;
+			manifest?: null | string;
+			xmlns?: null | string;
 		};
 
 		// Document metadata
 		head: HTMLAttributes;
 		title: HTMLAttributes;
 		base: HTMLAttributes & {
-			href?: string;
-			target?: string;
+			href?: null | string;
+			target?: null | string;
 		};
 		link: HTMLAttributes & {
-			href?: string;
-			rel?: string;
-			media?: string;
-			type?: string;
-			sizes?: string;
+			href?: null | string;
+			rel?: null | string;
+			media?: null | string;
+			type?: null | string;
+			sizes?: null | string;
 		};
 		meta: HTMLAttributes & {
-			charset?: string;
-			content?: string;
-			httpEquiv?: string;
-			name?: string;
+			charset?: null | string;
+			content?: null | string;
+			httpEquiv?: null | string;
+			name?: null | string;
 		};
 		style: HTMLAttributes & {
-			media?: string;
-			nonce?: string;
-			type?: string;
+			media?: null | string;
+			nonce?: null | string;
+			type?: null | string;
 		};
 
 		// Sections
@@ -234,16 +243,16 @@ export declare namespace JSX {
 		hr: HTMLAttributes;
 		pre: HTMLAttributes;
 		blockquote: HTMLAttributes & {
-			cite?: string;
+			cite?: null | string;
 		};
 		ol: HTMLAttributes & {
-			reversed?: boolean;
-			start?: number;
-			type?: "1" | "a" | "A" | "i" | "I";
+			reversed?: null | boolean;
+			start?: null | number;
+			type?: null | "1" | "a" | "A" | "i" | "I";
 		};
 		ul: HTMLAttributes;
 		li: HTMLAttributes & {
-			value?: number;
+			value?: null | number;
 		};
 		dl: HTMLAttributes;
 		dt: HTMLAttributes;
@@ -254,10 +263,10 @@ export declare namespace JSX {
 
 		// Text-level semantics
 		a: HTMLAttributes & {
-			href?: string;
-			target?: HTMLAttributeAnchorTarget;
-			download?: any;
-			rel?: string;
+			href?: null | string;
+			target?: null | HTMLAttributeAnchorTarget;
+			download?: null | any;
+			rel?: null | string;
 		};
 		em: HTMLAttributes;
 		strong: HTMLAttributes;
@@ -265,7 +274,7 @@ export declare namespace JSX {
 		s: HTMLAttributes;
 		cite: HTMLAttributes;
 		q: HTMLAttributes & {
-			cite?: string;
+			cite?: null | string;
 		};
 		dfn: HTMLAttributes;
 		abbr: HTMLAttributes;
@@ -273,7 +282,7 @@ export declare namespace JSX {
 			value: string;
 		};
 		time: HTMLAttributes & {
-			datetime?: string;
+			datetime?: null | string;
 		};
 		code: HTMLAttributes;
 		var: HTMLAttributes;
@@ -298,218 +307,220 @@ export declare namespace JSX {
 
 		// Forms
 		form: HTMLAttributes & {
-			acceptCharset?: string;
-			action?: string;
-			autocomplete?: string;
-			enctype?: string;
-			method?: "get" | "post";
-			name?: string;
-			novalidate?: boolean;
-			target?: string;
+			acceptCharset?: null | string;
+			action?: null | string;
+			autocomplete?: null | string;
+			enctype?: null | string;
+			method?: null | "get" | "post";
+			name?: null | string;
+			novalidate?: null | boolean;
+			target?: null | string;
 		};
 		label: HTMLAttributes & {
-			for?: string;
+			for?: null | string;
 		};
 		input: HTMLAttributes & {
-			accept?: string;
-			alt?: string;
-			autocomplete?: string;
-			autofocus?: boolean;
-			checked?: boolean;
-			dirname?: string;
-			disabled?: boolean;
-			form?: string;
-			formaction?: string;
-			formenctype?: string;
-			formmethod?: string;
-			formnovalidate?: boolean;
-			formtarget?: string;
-			height?: number | string;
-			list?: string;
-			max?: number | string;
-			maxlength?: number;
-			min?: number | string;
-			minlength?: number;
-			multiple?: boolean;
-			name?: string;
-			pattern?: string;
-			placeholder?: string;
-			readonly?: boolean;
-			required?: boolean;
-			size?: number;
-			src?: string;
-			step?: number | string;
-			type?: HTMLInputTypeAttribute;
-			value?: string | string[] | number;
-			width?: number | string;
+			accept?: null | string;
+			alt?: null | string;
+			autocomplete?: null | string;
+			autofocus?: null | boolean;
+			checked?: null | boolean;
+			dirname?: null | string;
+			disabled?: null | boolean;
+			form?: null | string;
+			formaction?: null | string;
+			formenctype?: null | string;
+			formmethod?: null | string;
+			formnovalidate?: null | boolean;
+			formtarget?: null | string;
+			height?: null | number | string;
+			list?: null | string;
+			max?: null | number | string;
+			maxlength?: null | number;
+			min?: null | number | string;
+			minlength?: null | number;
+			multiple?: null | boolean;
+			name?: null | string;
+			pattern?: null | string;
+			placeholder?: null | string;
+			readonly?: null | boolean;
+			required?: null | boolean;
+			size?: null | number;
+			src?: null | string;
+			step?: null | number | string;
+			type?: null | HTMLInputTypeAttribute;
+			value?: null | string | string[] | number;
+			width?: null | number | string;
 		};
 		button: HTMLAttributes & {
-			autofocus?: boolean;
-			disabled?: boolean;
-			form?: string;
-			formaction?: string;
-			formenctype?: string;
-			formmethod?: string;
-			formnovalidate?: boolean;
-			formtarget?: string;
-			name?: string;
-			type?: "submit" | "reset" | "button";
-			value?: string;
+			autofocus?: null | boolean;
+			disabled?: null | boolean;
+			form?: null | string;
+			formaction?: null | string;
+			formenctype?: null | string;
+			formmethod?: null | string;
+			formnovalidate?: null | boolean;
+			formtarget?: null | string;
+			name?: null | string;
+			type?: null | "submit" | "reset" | "button";
+			value?: null | string;
 		};
 		select: HTMLAttributes & {
-			autofocus?: boolean;
-			disabled?: boolean;
-			form?: string;
-			multiple?: boolean;
-			name?: string;
-			required?: boolean;
-			size?: number;
-			value?: string | string[] | number;
+			autofocus?: null | boolean;
+			disabled?: null | boolean;
+			form?: null | string;
+			multiple?: null | boolean;
+			name?: null | string;
+			required?: null | boolean;
+			size?: null | number;
+			value?: null | string | string[] | number;
 		};
 		optgroup: HTMLAttributes & {
-			disabled?: boolean;
-			label?: string;
+			disabled?: null | boolean;
+			label?: null | string;
 		};
 		option: HTMLAttributes & {
-			disabled?: boolean;
-			label?: string;
-			selected?: boolean;
-			value?: string | string[] | number;
+			disabled?: null | boolean;
+			label?: null | string;
+			selected?: null | boolean;
+			value?: null | string | string[] | number;
 		};
 		textarea: HTMLAttributes & {
-			autocomplete?: string;
-			autofocus?: boolean;
-			cols?: number;
-			dirname?: string;
-			disabled?: boolean;
-			form?: string;
-			maxlength?: number;
-			minlength?: number;
-			name?: string;
-			placeholder?: string;
-			readonly?: boolean;
-			required?: boolean;
-			rows?: number;
-			value?: string | string[] | number;
-			wrap?: string;
+			autocomplete?: null | string;
+			autofocus?: null | boolean;
+			cols?: null | number;
+			dirname?: null | string;
+			disabled?: null | boolean;
+			form?: null | string;
+			maxlength?: null | number;
+			minlength?: null | number;
+			name?: null | string;
+			placeholder?: null | string;
+			readonly?: null | boolean;
+			required?: null | boolean;
+			rows?: null | number;
+			value?: null | string | string[] | number;
+			wrap?: null | string;
 		};
 		fieldset: HTMLAttributes & {
-			disabled?: boolean;
-			form?: string;
-			name?: string;
+			disabled?: null | boolean;
+			form?: null | string;
+			name?: null | string;
 		};
 		legend: HTMLAttributes;
 		meter: HTMLAttributes & {
-			form?: string;
-			high?: number;
-			low?: number;
-			max?: number | string;
-			min?: number | string;
-			optimum?: number;
-			value?: string | string[] | number;
+			form?: null | string;
+			high?: null | number;
+			low?: null | number;
+			max?: null | number | string;
+			min?: null | number | string;
+			optimum?: null | number;
+			value?: null | string | string[] | number;
 		};
 		progress: HTMLAttributes & {
-			max?: number | string;
-			value?: string | string[] | number;
+			max?: null | number | string;
+			value?: null | string | string[] | number;
 		};
 
 		// Interactive elements
 		details: HTMLAttributes & {
-			open?: boolean;
+			open?: null | boolean;
 		};
 		summary: HTMLAttributes;
 		dialog: HTMLAttributes & {
-			open?: boolean;
+			open?: null | boolean;
 		};
 
 		// Scripting
 		script: HTMLAttributes & {
-			async?: boolean;
-			crossorigin?: string;
-			defer?: boolean;
-			integrity?: string;
-			nomodule?: boolean;
-			nonce?: string;
-			src?: string;
-			type?: string;
+			async?: null | boolean;
+			crossorigin?: null | string;
+			defer?: null | boolean;
+			integrity?: null | string;
+			nomodule?: null | boolean;
+			nonce?: null | string;
+			src?: null | string;
+			type?: null | string;
 		};
 		noscript: HTMLAttributes;
 		template: HTMLAttributes;
 		canvas: HTMLAttributes & {
-			height?: number | string;
-			width?: number | string;
+			height?: null | number | string;
+			width?: null | number | string;
 		};
 
 		// Image and multimedia
 		img: HTMLAttributes & {
-			alt?: string;
-			crossorigin?: "anonymous" | "use-credentials";
-			decoding?: "sync" | "async" | "auto";
-			height?: number | string;
-			loading?: "eager" | "lazy";
-			sizes?: string;
-			src?: string;
-			srcset?: string;
-			usemap?: string;
-			width?: number | string;
+			alt?: null | string;
+			crossorigin?: null | "anonymous" | "use-credentials";
+			decoding?: null | "sync" | "async" | "auto";
+			height?: null | number | string;
+			loading?: null | "eager" | "lazy";
+			sizes?: null | string;
+			src?: null | string;
+			srcset?: null | string;
+			usemap?: null | string;
+			width?: null | number | string;
 		};
 		picture: HTMLAttributes;
 		source: HTMLAttributes & {
-			media?: string;
-			sizes?: string;
-			src?: string;
-			srcset?: string;
-			type?: string;
+			media?: null | string;
+			sizes?: null | string;
+			src?: null | string;
+			srcset?: null | string;
+			type?: null | string;
 		};
 		video: HTMLAttributes & {
-			autoplay?: boolean;
-			controls?: boolean;
-			crossorigin?: "anonymous" | "use-credentials";
-			height?: number | string;
-			loop?: boolean;
-			muted?: boolean;
-			playsinline?: boolean;
-			poster?: string;
-			preload?: "none" | "metadata" | "auto";
-			src?: string;
-			width?: number | string;
+			autoplay?: null | boolean;
+			controls?: null | boolean;
+			crossorigin?: null | "anonymous" | "use-credentials";
+			height?: null | number | string;
+			loop?: null | boolean;
+			muted?: null | boolean;
+			playsinline?: null | boolean;
+			poster?: null | string;
+			preload?: null | "none" | "metadata" | "auto";
+			src?: null | string;
+			width?: null | number | string;
 		};
 		audio: HTMLAttributes & {
-			autoplay?: boolean;
-			controls?: boolean;
-			crossorigin?: "anonymous" | "use-credentials";
-			loop?: boolean;
-			muted?: boolean;
-			preload?: "none" | "metadata" | "auto";
-			src?: string;
+			autoplay?: null | boolean;
+			controls?: null | boolean;
+			crossorigin?: null | "anonymous" | "use-credentials";
+			loop?: null | boolean;
+			muted?: null | boolean;
+			preload?: null | "none" | "metadata" | "auto";
+			src?: null | string;
 		};
 		track: HTMLAttributes & {
-			default?: boolean;
+			default?: null | boolean;
 			kind?:
 				| "subtitles"
 				| "captions"
 				| "descriptions"
 				| "chapters"
 				| "metadata";
-			label?: string;
-			src?: string;
-			srclang?: string;
+			label?: null | string;
+			src?: null | string;
+			srclang?: null | string;
 		};
 
 		// Table content
 		tfoot: HTMLAttributes;
 		tr: HTMLAttributes;
 		th: HTMLAttributes & {
-			abbr?: string;
-			colspan?: number;
-			headers?: string;
-			rowspan?: number;
-			scope?: "row" | "col" | "rowgroup" | "colgroup";
+			abbr?: null | string;
+			colspan?: null | number;
+			headers?: null | string;
+			rowspan?: null | number;
+			scope?: null | "row" | "col" | "rowgroup" | "colgroup";
 		};
 		td: HTMLAttributes & {
-			colspan?: number;
-			headers?: string;
-			rowspan?: number;
+			colspan?: null | number;
+			headers?: null | string;
+			rowspan?: null | number;
 		};
+
+		[element: string]: HTMLAttributes;
 	}
 }
