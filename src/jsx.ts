@@ -1,7 +1,7 @@
 import { DOMStream } from "pipeable-dom";
 export type { JSX } from "./jsx-types.js";
 
-type JSXPrimitive = string | number | boolean | null | undefined;
+export type JSXPrimitive = string | number | boolean | null | undefined;
 
 export interface JSXProps {
 	children?: JSXNode;
@@ -23,7 +23,7 @@ export type JSXNode =
 	| Generator<JSXNode, void, unknown>
 	| AsyncGenerator<JSXNode, void, unknown>;
 
-type SwapType =
+export type SwapType =
 	| "beforebegin"
 	| "afterbegin"
 	| "beforeend"
