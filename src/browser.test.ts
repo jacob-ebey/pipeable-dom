@@ -4,6 +4,48 @@ import { swap } from "./browser.js";
 import { jsx } from "./jsx.js";
 
 describe("swap", () => {
+	it("can swap with ReadableStream<string>", async () => {
+		const container = document.createElement("div");
+		const target = document.createElement("div");
+		target.innerHTML = "initial";
+		container.appendChild(target);
+		document.body.appendChild(container);
+
+		await swap(
+			target,
+			"outerHTML",
+			new ReadableStream<string>({
+				start(controller) {
+					controller.enqueue('<div class="test">hello</div>');
+					controller.close();
+				},
+			}),
+		);
+		expect(container.innerHTML).toBe('<div class="test">hello</div>');
+	});
+
+	it("can swap with ReadableStream<Uint8Array>", async () => {
+		const container = document.createElement("div");
+		const target = document.createElement("div");
+		target.innerHTML = "initial";
+		container.appendChild(target);
+		document.body.appendChild(container);
+
+		await swap(
+			target,
+			"outerHTML",
+			new ReadableStream<Uint8Array>({
+				start(controller) {
+					controller.enqueue(
+						new TextEncoder().encode('<div class="test">hello</div>'),
+					);
+					controller.close();
+				},
+			}),
+		);
+		expect(container.innerHTML).toBe('<div class="test">hello</div>');
+	});
+
 	it("can swap outerHTML", async () => {
 		const container = document.createElement("div");
 		const target = document.createElement("div");

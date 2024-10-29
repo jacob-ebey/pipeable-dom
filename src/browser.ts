@@ -16,8 +16,35 @@ export type SwapType =
 export const swap = async (
 	target: Element,
 	swap: SwapType,
-	newContent: JSXNode,
+	newContent:
+		| JSXNode
+		| Response
+		| ReadableStream<string>
+		| ReadableStream<Uint8Array>,
 ) => {
+	let body: ReadableStream<string>;
+	if (newContent instanceof Response) {
+		if (!newContent.body) {
+			throw new Error("Response body is not readable");
+		}
+		body = newContent.body.pipeThrough(new TextDecoderStream());
+	} else if (newContent instanceof ReadableStream) {
+		let decoder = new TextDecoder();
+		body = newContent.pipeThrough(
+			new TransformStream<Uint8Array | string, string>({
+				transform(chunk, controller) {
+					if (typeof chunk === "string") {
+						controller.enqueue(chunk);
+					} else {
+						controller.enqueue(decoder.decode(chunk, { stream: true }));
+					}
+				},
+			}),
+		);
+	} else {
+		body = render(newContent);
+	}
+
 	swap = swap || OUTER_HTML;
 	let insertBefore: Node = document.createComment("");
 
@@ -35,26 +62,24 @@ export const swap = async (
 
 	try {
 		let processedFirstChunk = false;
-		await render(newContent)
-			.pipeThrough(new DOMStream())
-			.pipeTo(
-				new WritableStream({
-					write(node) {
-						if (!processedFirstChunk) {
-							if (swap == OUTER_HTML) {
-								target!.after(insertBefore);
-								target!.remove();
-							} else if (swap == INNER_HTML) {
-								target!.innerHTML = "";
-								target!.append(insertBefore);
-							}
-							processedFirstChunk = true;
+		await body.pipeThrough(new DOMStream()).pipeTo(
+			new WritableStream({
+				write(node) {
+					if (!processedFirstChunk) {
+						if (swap == OUTER_HTML) {
+							target!.after(insertBefore);
+							target!.remove();
+						} else if (swap == INNER_HTML) {
+							target!.innerHTML = "";
+							target!.append(insertBefore);
 						}
+						processedFirstChunk = true;
+					}
 
-						insertBefore.parentElement!.insertBefore(node, insertBefore);
-					},
-				}),
-			);
+					insertBefore.parentElement!.insertBefore(node, insertBefore);
+				},
+			}),
+		);
 	} finally {
 		if (insertBefore?.parentElement) {
 			insertBefore.parentElement.removeChild(insertBefore);
