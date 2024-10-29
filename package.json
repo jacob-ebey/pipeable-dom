@@ -1,6 +1,6 @@
 {
 	"name": "pipeable-dom",
-	"version": "0.0.24",
+	"version": "0.0.25",
 	"type": "module",
 	"description": "",
 	"files": ["dist"],
@@ -10,35 +10,40 @@
 		".": {
 			"types": "./dist/pipeable-dom.d.ts",
 			"node": {
-				"module-sync": "./dist/pipeable-dom.js"
+				"module-sync": "./dist/pipeable-dom.js",
+				"default": "./dist/pipeable-dom.js"
 			},
 			"default": "./dist/pipeable-dom.js"
 		},
 		"./browser": {
 			"types": "./dist/browser.d.ts",
 			"node": {
-				"module-sync": "./dist/browser.js"
+				"module-sync": "./dist/browser.js",
+				"default": "./dist/browser.js"
 			},
 			"default": "./dist/browser.js"
 		},
 		"./jsx": {
 			"types": "./dist/jsx.d.ts",
 			"node": {
-				"module-sync": "./dist/jsx.js"
+				"module-sync": "./dist/jsx.js",
+				"default": "./dist/jsx.js"
 			},
 			"default": "./dist/jsx.js"
 		},
 		"./jsx-runtime": {
 			"types": "./dist/jsx.d.ts",
 			"node": {
-				"module-sync": "./dist/jsx.js"
+				"module-sync": "./dist/jsx.js",
+				"default": "./dist/jsx.js"
 			},
 			"default": "./dist/jsx.js"
 		},
 		"./jsx-dev-runtime": {
 			"types": "./dist/jsx.d.ts",
 			"node": {
-				"module-sync": "./dist/jsx.js"
+				"module-sync": "./dist/jsx.js",
+				"default": "./dist/jsx.js"
 			},
 			"default": "./dist/jsx.js"
 		}
