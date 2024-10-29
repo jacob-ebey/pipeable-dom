@@ -1,6 +1,6 @@
 {
 	"name": "pipeable-dom",
-	"version": "0.0.23",
+	"version": "0.0.24",
 	"type": "module",
 	"description": "",
 	"files": ["dist"],
@@ -11,7 +11,7 @@
 			"types": "./dist/pipeable-dom.d.ts",
 			"node": {
 				"module-sync": "./dist/pipeable-dom.js",
-				"require": "./dist/pipeable-dom.cjs"
+				"default": "./dist/pipeable-dom.cjs"
 			},
 			"default": "./dist/pipeable-dom.js"
 		},
@@ -19,7 +19,7 @@
 			"types": "./dist/browser.d.ts",
 			"node": {
 				"module-sync": "./dist/browser.js",
-				"require": "./dist/browser.cjs"
+				"default": "./dist/browser.cjs"
 			},
 			"default": "./dist/browser.js"
 		},
@@ -27,7 +27,7 @@
 			"types": "./dist/jsx.d.ts",
 			"node": {
 				"module-sync": "./dist/jsx.js",
-				"require": "./dist/jsx.cjs"
+				"default": "./dist/jsx.cjs"
 			},
 			"default": "./dist/jsx.js"
 		},
@@ -35,7 +35,7 @@
 			"types": "./dist/jsx.d.ts",
 			"node": {
 				"module-sync": "./dist/jsx.js",
-				"require": "./dist/jsx.cjs"
+				"default": "./dist/jsx.cjs"
 			},
 			"default": "./dist/jsx.js"
 		},
@@ -43,7 +43,7 @@
 			"types": "./dist/jsx.d.ts",
 			"node": {
 				"module-sync": "./dist/jsx.js",
-				"require": "./dist/jsx.cjs"
+				"default": "./dist/jsx.cjs"
 			},
 			"default": "./dist/jsx.js"
 		}
