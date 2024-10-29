@@ -1,6 +1,6 @@
 {
 	"name": "pipeable-dom",
-	"version": "0.0.25",
+	"version": "0.0.26",
 	"type": "module",
 	"description": "",
 	"files": ["dist"],
@@ -46,7 +46,8 @@
 				"default": "./dist/jsx.js"
 			},
 			"default": "./dist/jsx.js"
-		}
+		},
+		"./package.json": "./package.json"
 	},
 	"scripts": {
 		"build": "tsup",
