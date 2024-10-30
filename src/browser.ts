@@ -78,9 +78,7 @@ export const swap = async (
 					}
 
 					if (typeof document.startViewTransition != "undefined") {
-						let lastTransition = transition;
 						transition = document.startViewTransition(() => {
-							if (lastTransition) lastTransition.skipTransition();
 							insertBefore.parentElement!.insertBefore(node, insertBefore);
 						});
 					} else {
