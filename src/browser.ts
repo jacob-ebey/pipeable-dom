@@ -62,7 +62,8 @@ export const swap = async (
 
 	try {
 		let processedFirstChunk = false;
-		await body.pipeThrough(new DOMStream()).pipeTo(
+		let transition: ViewTransition | undefined;
+		let donePromise = body.pipeThrough(new DOMStream()).pipeTo(
 			new WritableStream({
 				write(node) {
 					if (!processedFirstChunk) {
@@ -76,10 +77,20 @@ export const swap = async (
 						processedFirstChunk = true;
 					}
 
-					insertBefore.parentElement!.insertBefore(node, insertBefore);
+					if (typeof document.startViewTransition != "undefined") {
+						let lastTransition = transition;
+						transition = document.startViewTransition(() => {
+							if (lastTransition) lastTransition.skipTransition();
+							insertBefore.parentElement!.insertBefore(node, insertBefore);
+						});
+					} else {
+						insertBefore.parentElement!.insertBefore(node, insertBefore);
+					}
 				},
 			}),
 		);
+		await donePromise;
+		await transition?.finished;
 	} finally {
 		if (insertBefore?.parentElement) {
 			insertBefore.parentElement.removeChild(insertBefore);

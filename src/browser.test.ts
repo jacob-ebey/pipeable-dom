@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { waitFor } from "@testing-library/dom";
 
 import { swap } from "./browser.js";
 import { jsx } from "./jsx.js";
@@ -22,6 +23,34 @@ describe("swap", () => {
 			}),
 		);
 		expect(container.innerHTML).toBe('<div class="test">hello</div>');
+	});
+
+	it("can stream response chunks", async () => {
+		const container = document.createElement("div");
+		const target = document.createElement("div");
+		target.innerHTML = "initial";
+		container.appendChild(target);
+		document.body.appendChild(container);
+
+		await swap(
+			target,
+			"outerHTML",
+			new ReadableStream<Uint8Array>({
+				async start(controller) {
+					await new Promise((resolve) => setTimeout(resolve, 100));
+					controller.enqueue(
+						new TextEncoder().encode('<div class="a">aaaaaaaaa</div>'),
+					);
+					await waitFor(() => target.querySelector(".a"));
+					await new Promise((resolve) => setTimeout(resolve, 100));
+					controller.enqueue(
+						new TextEncoder().encode('<div class="b">bbbbbbbb</div>'),
+					);
+					await waitFor(() => target.querySelector(".b"));
+					controller.close();
+				},
+			}),
+		);
 	});
 
 	it("can swap with ReadableStream<Uint8Array>", async () => {
