@@ -21,6 +21,7 @@ export const swap = async (
 		| Response
 		| ReadableStream<string>
 		| ReadableStream<Uint8Array>,
+	onAppend?: (node: Node) => void,
 ) => {
 	let body: ReadableStream<string>;
 	if (newContent instanceof Response) {
@@ -78,6 +79,7 @@ export const swap = async (
 					}
 
 					insertBefore.parentElement!.insertBefore(node, insertBefore);
+					onAppend?.(node);
 				},
 			}),
 		);
