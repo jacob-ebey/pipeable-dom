@@ -77,13 +77,7 @@ export const swap = async (
 						processedFirstChunk = true;
 					}
 
-					if (typeof document.startViewTransition != "undefined") {
-						transition = document.startViewTransition(() => {
-							insertBefore.parentElement!.insertBefore(node, insertBefore);
-						});
-					} else {
-						insertBefore.parentElement!.insertBefore(node, insertBefore);
-					}
+					insertBefore.parentElement!.insertBefore(node, insertBefore);
 				},
 			}),
 		);
