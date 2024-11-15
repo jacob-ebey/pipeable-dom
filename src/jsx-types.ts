@@ -20,9 +20,7 @@ export type JSXNode =
 	| Generator<JSXNode, void, unknown>
 	| AsyncGenerator<JSXNode, void, unknown>;
 
-export type ActionFunction = (
-	request: Request,
-) => Promise<JSXNode | Response> | JSXNode | Response;
+export type ActionFunction = (request: Request) => unknown;
 
 export declare namespace JSX {
 	type HTMLAttributeAnchorTarget = "_self" | "_blank" | "_parent" | "_top";

@@ -1,5 +1,5 @@
-import { describe, expect, it } from "vitest";
 import { waitFor } from "@testing-library/dom";
+import { describe, expect, it } from "vitest";
 
 import { swap } from "./browser.js";
 import { jsx } from "./jsx.js";
