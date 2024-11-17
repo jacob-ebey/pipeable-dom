@@ -18,6 +18,7 @@ export type {
 export { jsx as jsxDEV, jsx as jsxs };
 
 const CHILDREN = "children";
+const DANGEROUSLY_SET_INNER_HTML = "dangerouslySetInnerHTML";
 const FUNCTION = "function";
 const OBJECT = "object";
 const ITERATOR = "iterator";
@@ -81,7 +82,7 @@ const escapeHtml = (str: string): string => {
 
 const renderAttributes = (props: JSXProps): string => {
 	return Object.entries(props)
-		.filter(([key]) => key != CHILDREN)
+		.filter(([key]) => key != CHILDREN && key !== DANGEROUSLY_SET_INNER_HTML)
 		.map(([key, value]) => {
 			if (value === true) return ` ${key}`;
 			if (value === false || value == null) return "";
@@ -226,7 +227,9 @@ export const renderAsync = async function* (
 						current.phase = "children";
 						current.type = type;
 						current.props = props;
-						if (props[CHILDREN]) {
+						if (props[DANGEROUSLY_SET_INNER_HTML]) {
+							yield props[DANGEROUSLY_SET_INNER_HTML].__html;
+						} else if (props[CHILDREN]) {
 							stack.push({ node: props[CHILDREN], phase: "start" });
 						}
 					}

@@ -101,6 +101,15 @@ describe("JSX Runtime", () => {
 				'<div data-test="&quot;&gt;&lt;script&gt;alert(&quot;xss&quot;)&lt;&#x2F;script&gt;"></div>',
 			);
 		});
+
+		it("can set inner HTML using dangerouslySetInnerHTML", async () => {
+			const element = jsx("div", {
+				dangerouslySetInnerHTML: { __html: "<script>alert('xss')</script>" },
+			});
+			expect(await collectOutput(renderAsync(element))).toBe(
+				"<div><script>alert('xss')</script></div>",
+			);
+		});
 	});
 
 	describe("Component Rendering", () => {

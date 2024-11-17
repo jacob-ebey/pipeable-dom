@@ -49,6 +49,9 @@ export declare namespace JSX {
 		| "week";
 
 	interface HTMLAttributes {
+		// JSX properties
+		dangerouslySetInnerHTML?: null | { __html: string };
+
 		// Global HTML attributes
 		accesskey?: null | string;
 		class?: null | string;
